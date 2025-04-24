@@ -16,6 +16,9 @@ const Items = {
     delete: (id, callback) => {
         db.query('DELETE FROM items WHERE iditems = ?', [id], callback);
     },
+    getByIdWithPhotos: (id, callback) => {
+        db.query('SELECT photo FROM items WHERE iditems = ?', [id], callback);
+    },
 };
 
 module.exports = Items;

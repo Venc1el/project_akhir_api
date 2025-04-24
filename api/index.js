@@ -2,11 +2,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
+const path = require('path');
 
 dotenv.config();
-
-// Middleware
-app.use(express.json());
 
 // Import routes (pakai require karena file lain .js)
 const userRoutes = require('../routes/users.routes');
@@ -24,15 +22,18 @@ const transactionDetailsRoutes = require('../routes/transaction_details.routes')
 // Use routes
 app.use('/api/users', userRoutes);
 app.use('/api/category', categoryRoutes);
-app.use('/api/labels', labelsRoutes);
 app.use('/api/item-labels', itemLabelsRoutes);
 app.use('/api/item-units', itemUnitsRoutes);
 app.use('/api/items', itemsRoutes);
+app.use('/api/labels', labelsRoutes);
 app.use('/api/payments', paymentsRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/stores', storesRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/transaction-details', transactionDetailsRoutes);
+
+app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
