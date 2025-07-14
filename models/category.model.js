@@ -1,21 +1,15 @@
-const db = require('./db');
+// models/category.model.js
+const pool = require('./db');
 
-const Category = {
-    getAll: (callback) => {
-        db.query('SELECT * FROM category', callback);
-    },
-    getById: (id, callback) => {
-        db.query('SELECT * FROM category WHERE idcategory = ?', [id], callback);
-    },
-    create: (data, callback) => {
-        db.query('INSERT INTO category SET ?', data, callback);
-    },
-    update: (id, data, callback) => {
-        db.query('UPDATE category SET ? WHERE idcategory = ?', [data, id], callback);
-    },
-    delete: (id, callback) => {
-        db.query('DELETE FROM category WHERE idcategory = ?', [id], callback);
-    },
-};
+class Category {
+    static async getAll() {
+        try {
+            const [rows] = await pool.execute('SELECT idcategory, name FROM category');
+            return rows;
+        } catch (error) {
+            throw new Error('Database query failed for getting all categories.');
+        }
+    }
+}
 
 module.exports = Category;

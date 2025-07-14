@@ -1,21 +1,14 @@
-const db = require('./db');
+const pool = require('./db');
 
-const Labels = {
-    getAll: (callback) => {
-        db.query('SELECT * FROM labels', callback);
-    },
-    getById: (id, callback) => {
-        db.query('SELECT * FROM labels WHERE idlabels = ?', [id], callback);
-    },
-    create: (data, callback) => {
-        db.query('INSERT INTO labels SET ?', data, callback);
-    },
-    update: (id, data, callback) => {
-        db.query('UPDATE labels SET ? WHERE idlabels = ?', [data, id], callback);
-    },
-    delete: (id, callback) => {
-        db.query('DELETE FROM labels WHERE idlabels = ?', [id], callback);
-    },
-};
+class Labels {
+    static async getAll() {
+        try {
+            const [rows] = await pool.execute('SELECT idlabels, name FROM labels');
+            return rows;
+        } catch (error) {
+            throw new Error('Database query failed for getting all labels.');
+        }
+    }
+}
 
 module.exports = Labels;
